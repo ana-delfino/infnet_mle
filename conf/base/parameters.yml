@@ -1,0 +1,7 @@
+# Train-Test split
+test_size: 0.2
+random_state: 42
+session_id: 54321
+experiment_name: "MLE_kob"
+# Inicializar uma sessão de experiemntação no PyCaret, garantindo a reprodutibilidade 
+inicializador_pycaret: 123

@@ -1,0 +1,49 @@
+# Here you can define all your datasets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+
+data_raw:
+  type: pandas.ParquetDataset
+  filepath: data/01_raw/dataset_kobe_dev.parquet
+
+data_filtered:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/data_filtered.parquet
+
+x_train:
+  type: pandas.ParquetDataset
+  filepath: data/04_feature/x_train.parquet
+
+y_train:
+  type: pandas.ParquetDataset
+  filepath: data/04_feature/y_train.parquet
+
+x_test:
+  type: pandas.ParquetDataset
+  filepath: data/04_feature/x_test.parquet
+
+y_test:
+  type: pandas.ParquetDataset
+  filepath: data/04_feature/y_test.parquet
+
+train_test_metrics:
+  type: kedro_mlflow.io.metrics.MlflowMetricsHistoryDataset
+
+log_reg_model:
+  type: kedro_mlflow.io.models.MlflowModelTrackingDataset
+  flavor: mlflow.sklearn
+  save_args:
+    registered_model_name: log_reg_model
+
+decision_tree_model:
+  type: kedro_mlflow.io.models.MlflowModelTrackingDataset
+  flavor: mlflow.sklearn
+  save_args:
+    registered_model_name: decision_tree_model
+
+log_reg_metrics:
+  type: kedro_mlflow.io.metrics.MlflowMetricsHistoryDataset
+
+decision_tree_metrics:
+  type: kedro_mlflow.io.metrics.MlflowMetricsHistoryDataset

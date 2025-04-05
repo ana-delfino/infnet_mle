@@ -1,0 +1,8 @@
+src/mle_kobe/pipelines/Treinamento/__pycache__/
+src/mle_kobe/pipelines/PreparacaoDados/__pycache__/
+src/mle_kobe/pipelines/PipelineAplicacao/__pycache__/
+mlruns/
+data/01_raw/
+data/04_feature/
+src/mle_kobe/__pycache__/
+src/mle_kobe/pipelines/__pycache__/
