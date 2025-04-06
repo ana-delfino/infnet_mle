@@ -93,15 +93,21 @@ Além disso, tanto o MLflow quanto o PyCaret facilitam o monitoramento contínuo
 Com base no diagrama realizado na questão 2, aponte os artefatos que serão criados ao longo de um projeto. Para cada artefato, a descrição detalhada de sua composição.
 
 - Data raw: dataset que inclui informações sobre os arremessos de Kobe, como a distância do arremesso, posição da quadra, tempo restante, entre outros.
+  `lat`:  float64
+`lon`:               float64
+`minutes_remaining`:    int64  
+`period`:               int64  
+`playoffs`:        int64  
+`shot_distance`:     int64
 - Preparação de dados:
-  - Filtered dataset: Nó que faz o primeiro préprocessamento dos dados filtrando os apenas as colunas selecionadas para o treinamento e predição do modelo.
-  - Split Data: Separa os dados em  conjunto de treinamento e conjunto de teste, bem como o parâmetro, informando o percentual utilizado para divisão do conjunto de dados em treino teste.
-  - Dataset Metrics: Calcula o size para os datasets de treino e teste e apresenta o % de teste.
+  - `Filtered dataset`: Nó que faz o primeiro pré-processamento dos dados filtrando os apenas as colunas selecionadas para o treinamento e predição do modelo e removendo os dados faltantes.
+  - `Split Data`: Separa os dados em  conjunto de treinamento e conjunto de teste, bem como o parâmetro, informando o percentual utilizado para divisão do conjunto de dados em treino teste.
+  - `Dataset Metrics`: Calcula o size para os datasets de treino e teste e apresenta o % de teste.
 - Treinamento:
-  - Log_reg_model_train: Ajusta o modelo de regressão logistica utlizando os dados de treinamento.
-  - Decision tree model train: Ajusta o modelo de árvore de decisão utlizando os dados de treinamento.
-  - Compute log reg model metrics: Cálcula as métricas para o modelo de regressão logística
-  - Compute decision tree model metrics: Cálcula as métricas para o modelo de árvore de decisão .
+  - `Log_reg_model_train`: Ajusta o modelo de regressão logistica utlizando os dados de treinamento.
+  - `Decision tree model train`: Ajusta o modelo de árvore de decisão utlizando os dados de treinamento.
+  - `Compute log reg model metrics`: Cálcula as métricas para o modelo de regressão logística
+  - `Compute decision tree model metrics`: Cálcula as métricas para o modelo de árvore de decisão .
   
 <h4 id="pipelinepreparacao">Preparação de Dados</h4>
 
@@ -141,17 +147,38 @@ Em resumo, a definição dos conjuntos de treinamento e teste é uma etapa cruci
 #### 6
 Implementar o pipeline de treinamento do modelo com o MlFlow usando o nome "Treinamento"
   - a) Com os dados separados para treinamento, treine um modelo com regressão logística do sklearn usando a biblioteca pyCaret.
+  
+    `Resposta:` ver srv/mle_kobe/pipelines e picture acima
+
   - b) Registre a função custo "log loss" usando a base de teste
+  
+    `Resposta:` ver srv/mle_kobe/pipelines e picture acima
+
   - c) Com os dados separados para treinamento, treine um modelo de árvore de decisão do sklearn usando a biblioteca pyCaret.
+
+    `Resposta:` ver srv/mle_kobe/pipelines e picture acima
+  
   - d) Registre a função custo "log loss" e F1_score para o modelo de árvore.
+  
+    `Resposta:` ver srv/mle_kobe/pipelines e picture acima
+  
   - e) Selecione um dos dois modelos para finalização e justifique sua escolha.
 
-`Resposta:` O modelo decision tree foi escolhido devido ao f1 score e por sem um modelo de fácil explicabilidade.
+    `Resposta:` O modelo decision tree foi escolhido devido ao f1 score e por sem um modelo de fácil explicabilidade.
 
 #### 7
 Registre o modelo de classificação e o sirva através do MLFlow (ou como uma API local, ou embarcando o modelo na aplicação). Desenvolva um pipeline de aplicação (aplicacao.py) para carregar a base de produção (/data/raw/dataset_kobe_prod.parquet) e aplicar o modelo. Nomeie a rodada (run) do mlflow como “PipelineAplicacao” e publique, tanto uma tabela com os resultados obtidos (artefato como .parquet), quanto log as métricas do novo log loss e f1_score do modelo.
 
-`Resposta:`  desenvolvido em streamlit/applicacao.py
+`Resposta:`  O modelo foi registrado no MLflow como Decision tree  url = 'http://localhost:5000/invocations/'. O comando abaixo foi utlizado para registrar o modelo.
+
+```
+mlflow models serve \
+    -m models:/decision_tree_model/9 \
+    --env-manager=local \
+    --port 5001
+
+```
+A aplicação foi desenvolvida em streamlit/applicacao.py
 
 ![Métricas do dataset](data/08_reporting/mlflow_pipelineaplicacao.png)
 
@@ -182,5 +209,11 @@ Ambas as estratégias podem ser complementares e podem ser usadas em conjunto pa
 #### 8
 
 Implemente um dashboard de monitoramento da operação usando Streamlit.
+Para executar a aplicação rode o comando abaixo: 
+
+```
+cd streamlit/
+streamlit run streamlit/main.py
+```
 
 ![Métricas do dataset](data/08_reporting/streamlit.png)
