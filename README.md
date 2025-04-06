@@ -93,12 +93,16 @@ Além disso, tanto o MLflow quanto o PyCaret facilitam o monitoramento contínuo
 Com base no diagrama realizado na questão 2, aponte os artefatos que serão criados ao longo de um projeto. Para cada artefato, a descrição detalhada de sua composição.
 
 - Data raw: dataset que inclui informações sobre os arremessos de Kobe, como a distância do arremesso, posição da quadra, tempo restante, entre outros.
-  `lat`:  float64
-`lon`:               float64
-`minutes_remaining`:    int64  
-`period`:               int64  
-`playoffs`:        int64  
-`shot_distance`:     int64
+  
+| Variável                        | Tipo              | Descrição |
+|--------------------------------|-------------------|-----------|
+| `lat` (Latitude)               | Numérica (float)  | Latitude da posição da quadra onde o arremesso foi feito. Em conjunto com `lon`, representa a localização espacial do jogador no momento do arremesso. |
+| `lon` (Longitude)              | Numérica (float)  | Longitude correspondente à posição do arremesso. Junto com `lat`, define a localização em coordenadas espaciais. |
+| `minutes_remaining` (Minutos Restantes) | Numérica (int)    | Minutos restantes no período atual do jogo. Influencia o contexto em que o arremesso foi feito (pressão do tempo). |
+| `period` (Período)            | Numérica (int)    | Indica qual período do jogo estava em andamento no momento do arremesso (1 a 4 para jogo regular, 5+ para prorrogações). |
+| `playoffs` (Playoffs)         | Binária (0 ou 1)  | Indica se o jogo era dos playoffs (`1`) ou da temporada regular (`0`). Jogos de playoffs geralmente têm maior pressão e diferente dinâmica. |
+| `shot_distance` (Distância do Arremesso) | Numérica (int) | Distância euclidiana entre o local do arremesso e a cesta. Arremessos de longa distância tendem a ter menor chance de acerto. |
+
 - Preparação de dados:
   - `Filtered dataset`: Nó que faz o primeiro pré-processamento dos dados filtrando os apenas as colunas selecionadas para o treinamento e predição do modelo e removendo os dados faltantes.
   - `Split Data`: Separa os dados em  conjunto de treinamento e conjunto de teste, bem como o parâmetro, informando o percentual utilizado para divisão do conjunto de dados em treino teste.
