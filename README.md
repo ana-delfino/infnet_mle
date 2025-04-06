@@ -142,7 +142,9 @@ Em resumo, a definição dos conjuntos de treinamento e teste é uma etapa cruci
 
 - e) Registre os parâmetros (% teste) e métricas (tamanho de cada base) no MlFlow
 
-![Métricas do dataset](data/08_reporting/mlflow_metrics.png)
+![Métricas do dataset](data/08_reporting/train_test_metrics.png)
+
+
 
 #### 6
 Implementar o pipeline de treinamento do modelo com o MlFlow usando o nome "Treinamento"
@@ -165,6 +167,10 @@ Implementar o pipeline de treinamento do modelo com o MlFlow usando o nome "Trei
   - e) Selecione um dos dois modelos para finalização e justifique sua escolha.
 
     `Resposta:` O modelo decision tree foi escolhido devido ao f1 score e por sem um modelo de fácil explicabilidade.
+
+![Métricas no MLFLOW](data/08_reporting/mlflow_metrics.png)
+
+![Modelos no MLFLOW](data/08_reporting/modelos_registrados_mlflow.png)
 
 #### 7
 Registre o modelo de classificação e o sirva através do MLFlow (ou como uma API local, ou embarcando o modelo na aplicação). Desenvolva um pipeline de aplicação (aplicacao.py) para carregar a base de produção (/data/raw/dataset_kobe_prod.parquet) e aplicar o modelo. Nomeie a rodada (run) do mlflow como “PipelineAplicacao” e publique, tanto uma tabela com os resultados obtidos (artefato como .parquet), quanto log as métricas do novo log loss e f1_score do modelo.
