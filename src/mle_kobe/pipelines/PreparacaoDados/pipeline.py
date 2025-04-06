@@ -30,9 +30,9 @@ def create_pipeline(**kwargs) -> Pipeline:
             'y_test'],
         ),
         node(
-        func=nodes.dataset_metrics,
-        name='dataset_metrics',
-        inputs=['x_train','x_test','params:test_size'],
-        outputs='train_test_metrics',
+            func=nodes.dataset_metrics,
+            name='dataset_metrics',
+            inputs=['x_train','x_test','params:test_size'],
+            outputs='train_test_metrics',
         )
     ])
