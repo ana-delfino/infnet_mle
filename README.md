@@ -1,4 +1,5 @@
 # Projeto Final MLE
+Aqui temos o readme do projeto e o link este mesmo readme no github: https://github.com/ana-delfino/infnet_mle
 
 ### Índice
 - [Configuração do ambiente](#configuracao-do-ambiente)
@@ -12,48 +13,48 @@
 
 Para configurar o ambiente no terminal projeto siga as intruções abaixo:
 - 1: Criar um ambiente virtual com python 3.9.21 : 
-```
-pyenv virtualenv 3.9.21 .venv
-```
+  ```
+  pyenv virtualenv 3.9.21 .venv
+  ```
 - 2: Ative o ambiente :
-```
-pyenv activate .venv
-```
+  ```
+  pyenv activate .venv
+  ```
 - 3: Instale o kedro no ambiente virtual
-```
-pip install kedro
-```
+  ```
+  pip install kedro
+  ```
 - 4: Crie o projeto kedro mle-kobe
- ```
- kedro new -n mle-kobe -t docs,data --example=n --telemetry=no
- ```
+  ```
+  kedro new -n mle-kobe -t docs,data --example=n --telemetry=no
+  ```
 - 5: Mova os arquivos do folder mle-kobe para o folder principal
-```
-mv mle-kobe/* .
-``` 
+  ```
+  mv mle-kobe/* .
+  ``` 
 - 6: Remova o folder mle-kobe
-```
-rm -rf mle-kobe
-``` 
+  ```
+  rm -rf mle-kobe
+  ``` 
 - 7: Renomear requirements.txt para requirements.in
-```
-mv requirements.txt requirements.in
-``` 
+  ```
+  mv requirements.txt requirements.in
+  ``` 
 - 8: Adicionar dependencias ao requirements.in.
 Deve ficar assim:
-```
-ipython>=8.10
-jupyterlab>=3.0
-kedro~=0.19.11
-kedro-datasets[pandas]
-notebook
-pyarrow
-mlflow<2.13
-pycaret[models,mlops]
-scikit-optimize
-kedro-mlflow
-streamlit
-```
+  ```
+  ipython>=8.10
+  jupyterlab>=3.0
+  kedro~=0.19.11
+  kedro-datasets[pandas]
+  notebook
+  pyarrow
+  mlflow<2.13
+  pycaret[models,mlops]
+  scikit-optimize
+  kedro-mlflow
+  streamlit
+  ```
 - 10: Instalar pip-tools e resolver as dependências
   ```
   pip install pip-tools
@@ -71,6 +72,7 @@ Iremos desenvolver um preditor de arremessos usando duas abordagens (regressão 
 ![Diagrama com Etapas](data/08_reporting/diagramaetapas.png)
 
 #### 3
+
 Como as ferramentas Streamlit, MLFlow, PyCaret e Scikit-Learn auxiliam na construção dos pipelines descritos anteriormente? A resposta deve abranger os seguintes aspectos:
 - Rastreamento de experimentos;
 - Funções de treinamento;
@@ -99,7 +101,7 @@ Com base no diagrama realizado na questão 2, aponte os artefatos que serão cri
   - Log_reg_model_train: Ajusta o modelo de regressão logistica utlizando os dados de treinamento.
   - Decision tree model train: Ajusta o modelo de árvore de decisão utlizando os dados de treinamento.
   - Compute log reg model metrics: Cálcula as métricas para o modelo de regressão logística
-  -  Compute decision tree model metrics: Cálcula as métricas para o modelo de árvore de decisão .
+  - Compute decision tree model metrics: Cálcula as métricas para o modelo de árvore de decisão .
   
 <h4 id="pipelinepreparacao">Preparação de Dados</h4>
 
@@ -109,7 +111,9 @@ Com base no diagrama realizado na questão 2, aponte os artefatos que serão cri
 
 Implemente o pipeline de processamento de dados com o mlflow, rodada (run) com o nome "PreparacaoDados":
 - a) Os dados devem estar localizados em "/data/raw/dataset_kobe_dev.parquet" e "/data/raw/dataset_kobe_prod.parquet". 
-  ![Arquivos](data/08_reporting/dados.png)
+
+![Arquivos](data/08_reporting/dados.png)
+
 - b) Observe que há dados faltantes na base de dados! As linhas que possuem dados faltantes devem ser desconsideradas. Para esse exercício serão apenas consideradas as colunas: lat, lng, minutes remaining, period, playoffs, shot_distance
   
 `Resposta`: O node filter_dataset da preparação de dados faz esse filtro
@@ -141,22 +145,25 @@ Implementar o pipeline de treinamento do modelo com o MlFlow usando o nome "Trei
   - c) Com os dados separados para treinamento, treine um modelo de árvore de decisão do sklearn usando a biblioteca pyCaret.
   - d) Registre a função custo "log loss" e F1_score para o modelo de árvore.
   - e) Selecione um dos dois modelos para finalização e justifique sua escolha.
+
 `Resposta:` O modelo decision tree foi escolhido devido ao f1 score e por sem um modelo de fácil explicabilidade.
 
 #### 7
 Registre o modelo de classificação e o sirva através do MLFlow (ou como uma API local, ou embarcando o modelo na aplicação). Desenvolva um pipeline de aplicação (aplicacao.py) para carregar a base de produção (/data/raw/dataset_kobe_prod.parquet) e aplicar o modelo. Nomeie a rodada (run) do mlflow como “PipelineAplicacao” e publique, tanto uma tabela com os resultados obtidos (artefato como .parquet), quanto log as métricas do novo log loss e f1_score do modelo.
- `Resposta:`  desenvolvido em streamlit/applicacao.py
-  ![Métricas do dataset](data/08_reporting/mlflow_pipelineaplicacao.png)
+
+`Resposta:`  desenvolvido em streamlit/applicacao.py
+
+![Métricas do dataset](data/08_reporting/mlflow_pipelineaplicacao.png)
 
 - a) O modelo é aderente a essa nova base? O que mudou entre uma base e outra? Justifique.
+
 `Resposta:` Não, vemos queda no log loss e um f1 score de zero mostrando que o modelo não é generalizado para os dados de produção.
 
 - b) Descreva como podemos monitorar a saúde do modelo no cenário com e sem a disponibilidade da variável resposta para o modelo em operação.
 
 `Resposta:` Em um cenário em que a variável resposta está disponível, podemos monitorar a saúde do modelo por meio da análise de 
 suas métricas de desempenho, como a função de perda log loss e o F1-Score. Essas métricas nos dão uma medida objetiva do quão bem o modelo está se saindo na tarefa de classificação.
-Por exemplo, se o log loss e F1 estiverem baixos e estáveis ao longo do tempo, isso indica que o modelo está funcionando bem e é capaz de fazer previsões precisas com base nos dados disponíveis. Se houver uma queda repentina no desempenho do modelo, isso pode indicar que há um problema com a qualidade dos dados de entrada ou que o modelo precisa de ajustes.
-No entanto, em um cenário em que a variável resposta não está disponível, pode ser mais difícil monitorar a saúde do modelo. Nesse caso, pode ser necessário recorrer a outras técnicas, como a validação cruzada ou a análise de sensibilidade, para avaliar a capacidade do modelo de generalização para novos dados.
+Por exemplo, se o log loss e F1 estiverem baixos e estáveis ao longo do tempo, isso indica que o modelo está funcionando bem e é capaz de fazer previsões precisas com base nos dados disponíveis. Se houver uma queda repentina no desempenho do modelo, isso pode indicar que há um problema com a qualidade dos dados de entrada ou que o modelo precisa de ajustes. No entanto, em um cenário em que a variável resposta não está disponível, pode ser mais difícil monitorar a saúde do modelo. Nesse caso, pode ser necessário recorrer a outras técnicas, como a validação cruzada ou a análise de sensibilidade, para avaliar a capacidade do modelo de generalização para novos dados.
 
 - c) Descreva as estratégias reativa e preditiva de retreinamento para o modelo em operação.
 
@@ -173,6 +180,7 @@ Ambas as estratégias podem ser complementares e podem ser usadas em conjunto pa
 <h3 id="streamlit">Streamlit</h3>
 
 #### 8
+
 Implemente um dashboard de monitoramento da operação usando Streamlit.
 
 ![Métricas do dataset](data/08_reporting/streamlit.png)
